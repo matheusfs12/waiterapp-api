@@ -8,7 +8,6 @@ import { ProductController } from './app/controllers/ProductController';
 import { ProductValidator } from './app/middlewares/ProductValidator';
 import { Router } from 'express';
 import path from 'node:path';
-import { validate } from 'express-validation';
 
 export const router = Router();
 
