@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { OrderRepository } from '../repositories/OrderRepository';
+import { io } from '../..';
 
 async function index(req: Request, res: Response) {
     const orders = await OrderRepository.list();
@@ -11,9 +12,13 @@ async function index(req: Request, res: Response) {
 async function create(req: Request, res: Response) {
     const { table, products } = req.body;
 
-    const category = await OrderRepository.create({ table, products });
+    const order = await OrderRepository.create({ table, products });
 
-    res.status(201).send(category);
+    const orderDetails = await order.populate('products.product');
+
+    io.emit('orders@new', orderDetails);
+
+    res.status(201).send(order);
 }
 
 async function updateStatus(req: Request, res: Response) {

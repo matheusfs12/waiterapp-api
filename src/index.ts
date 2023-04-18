@@ -1,15 +1,19 @@
 import { GlobalErrorHandler } from './app/middlewares/GlobalErrorHandler';
+import { Server } from 'socket.io';
 import cors from 'cors';
 import express from 'express';
+import http from 'node:http';
 import mongoose from 'mongoose';
 import path from 'node:path';
 import { router } from './router';
 
+const app = express();
+const server = http.createServer(app);
+export const io = new Server(server);
+
 mongoose.connect('mongodb://localhost:27017')
     .then(() => {
         console.log('✅ Connected to MongoDB');
-
-        const app = express();
 
         app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
         app.use(cors());
@@ -19,7 +23,7 @@ mongoose.connect('mongodb://localhost:27017')
 
         app.use(GlobalErrorHandler.handler);
 
-        app.listen(3001, () => {
+        server.listen(3001, () => {
             console.log('🚀 Server started on http://localhost:3001');
         });
     })
