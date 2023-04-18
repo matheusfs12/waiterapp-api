@@ -1,6 +1,6 @@
 # WaiterApp API
 
-Developed to practice the concepts of Node.js, Express, MongoDB and Mongoose.
+Developed in the course JStack From Mateus Silva
 
 ## Installation
 
